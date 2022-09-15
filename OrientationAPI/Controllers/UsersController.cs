@@ -62,7 +62,7 @@ namespace OrientationAPI.Controllers
                 password = user.password
             };
 
-            //_loginController.Login(loginUserDto);
+            _loginController.Login(loginUserDto);
             return StatusCode(201,user);
 
         }
@@ -70,7 +70,7 @@ namespace OrientationAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult get(int id)
         {
-            User user = _userService.get(id);
+                User user = _userService.get(id);
             if (user == null)
             {
                 return NotFound("There is no user registered with this id.");
@@ -78,37 +78,17 @@ namespace OrientationAPI.Controllers
             return Ok(user);
         }
 
-        //[HttpPost("demand")]
-        //public ActionResult createDemand([FromForm] CreateDemandDto createDemandDto)
-        //{
-        //    //if (LoginController.userRole != Constants.userRole)
-        //    //{
-        //    //    return BadRequest("You must log in with a user account.");
-        //    //}
+        [HttpGet("demand/{id}")]
+        public ActionResult getDemandById(int id)
+        {
+            var demand = _demandService.get(id);
 
-        //    var document = _demandService.UploadDocument(createDemandDto.document);
-
-        //    //if (document.Length < 1)
-        //    //{
-        //    //    return BadRequest("Document upload processing failed");
-        //    //}
-
-        //    Demand demand = new Demand
-        //    {
-        //        userId = LoginController.userId,
-        //        name = createDemandDto.name,
-        //        surname = createDemandDto.surname,
-        //        description = createDemandDto.description,
-        //        uploadTime = DateTime.Now,
-        //        isEvaluate = false,
-        //        document = document
-
-        //    };
-
-        //    _demandService.Add(demand); 
-        //    return Ok(demand);
-        //}
-
+            if(demand == null)
+            {
+                return NotFound("Demand not found");
+            }
+            return Ok(demand);
+        }
 
         [HttpPost("demand")]
         public async Task<ActionResult> createDemand([FromForm] CreateDemandDto createDemandDto)
@@ -137,7 +117,7 @@ namespace OrientationAPI.Controllers
             return Ok(demand);
         }
 
-        [HttpGet("demand/{userId}")]
+        [HttpGet("demands/{userId}")]
         public ActionResult getDemandsByUserId(int userId)
         {
             //if (LoginController.userRole != Constants.userRole)
@@ -146,7 +126,7 @@ namespace OrientationAPI.Controllers
             //}
 
             var demands = _demandService.GetListByUserId(userId);
-            
+                    
             return Ok(demands);
         }
 

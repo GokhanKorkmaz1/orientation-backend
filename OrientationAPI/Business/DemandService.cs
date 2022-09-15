@@ -32,6 +32,12 @@ namespace OrientationAPI.Business
             return _demandRepository.GetList();
         }
 
+        public void Update(Demand entity)
+        {
+            _demandRepository.Update(entity);
+            _demandRepository.SaveAll();
+        }
+
         public byte[] UploadDocument(IFormFile file)
         {
              using (var memoryStream = new MemoryStream())

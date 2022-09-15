@@ -71,6 +71,8 @@ namespace OrientationAPI.Controllers
             };
 
             _decisionService.Add(decision);
+            demand.isEvaluate = true;
+            _demandService.Update(demand);
             return Ok(decision);
         }
 

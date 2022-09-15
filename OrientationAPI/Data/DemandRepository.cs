@@ -16,6 +16,11 @@ namespace OrientationAPI.Data
             _orientationContext.Add(entity);
         }
 
+        public void Update(Demand entity)
+        {
+            _orientationContext.Update(entity);
+        }
+
         public Demand Get(int id)
         {
             return _orientationContext.demands.FirstOrDefault(d => d.id == id);
