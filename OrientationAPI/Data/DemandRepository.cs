@@ -33,7 +33,7 @@ namespace OrientationAPI.Data
 
         public List<Demand> GetList()
         {
-            return _orientationContext.demands.ToList();
+            return _orientationContext.demands.Where(d => d.isEvaluate == false ).ToList();
         }
 
         public bool SaveAll()

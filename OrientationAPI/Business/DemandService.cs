@@ -38,26 +38,9 @@ namespace OrientationAPI.Business
             _demandRepository.SaveAll();
         }
 
-        public byte[] UploadDocument(IFormFile file)
-        {
-             using (var memoryStream = new MemoryStream())
-            {
-                 file.CopyTo(memoryStream);
-                // Upload the file if less than 2 MB
-                if (memoryStream.Length > 2097151)
-                {
-                    return null;
-                }
-                
-                byte[] data = memoryStream.ToArray();
-                return data;
-            }
-
-        }
-
         public async Task<byte[]> UploadDocumentAsync(IFormFile file)
         {
-            using (var memoryStream = new MemoryStream())
+            await using (var memoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(memoryStream);
                 // Upload the file if less than 2 MB
@@ -65,10 +48,31 @@ namespace OrientationAPI.Business
                 {
                     return null;
                 }
-
                 byte[] data = memoryStream.ToArray();
                 return data;
             }
+
+        }
+
+        public async Task<IFormFile> getFile(byte[] content)
+        {
+            await using (var memoryStream = new MemoryStream(content))
+            {
+                IFormFile file =  new FormFile(memoryStream, 0, content.Length, "file", "filename");
+                
+                return file;
+            }
+
+        }
+
+        public string CopyToDestinationFolder(string path)
+        {
+            string rootPath = @"C:\Users\tabim38\Downloads\";
+            string fileName = Path.GetFileName(path);
+            rootPath += fileName;
+            File.Copy(path, rootPath, true);
+
+            return fileName;
         }
     }
 }

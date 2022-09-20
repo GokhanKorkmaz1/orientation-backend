@@ -18,7 +18,7 @@ namespace OrientationAPI.Data
 
         public User Get(int id)
         {
-            return _orientationContext.users.FirstOrDefault(u => u.id == id && u.isAdmin == false);
+            return _orientationContext.users.FirstOrDefault(u => u.id == id);
         }
 
         public User GetByEmail(string email)

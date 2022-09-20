@@ -12,7 +12,8 @@ namespace OrientationAPI.Models
         public string surname { get; set; }
         public string description { get; set; } = null!;
         public bool isEvaluate { get; set; }
-        public byte[] document { get; set; }
+        public string document { get; set; }
+        //public byte[] document { get; set; }
         public DateTime uploadTime { get; set; }
     }
 }

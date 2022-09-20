@@ -28,10 +28,10 @@ namespace OrientationAPI.Controllers
         [HttpGet("demands")]
         public ActionResult getDemandsList()
         {
-            //if ( LoginController.userRole != Constants.adminRole)
-            //{
-            //    return BadRequest("You must log in with an admin account.");
-            //}
+            if (LoginController.userRole != Constants.adminRole)
+            {
+                return Unauthorized("You must log in with an admin account.");
+            }
             List<Demand> demands = _demandService.GetAll();
             return Ok(demands);
         }
@@ -53,7 +53,7 @@ namespace OrientationAPI.Controllers
         {
             if (LoginController.userRole != Constants.adminRole)
             {
-                return BadRequest("You must log in with an admin account.");
+                return Unauthorized("You must log in with an admin account.");
             }
 
             Demand demand = _demandService.get(createDecisionDto.demandId);
@@ -79,7 +79,24 @@ namespace OrientationAPI.Controllers
         [HttpGet("decisions")]
         public ActionResult getDecisions()
         {
+            if (LoginController.userRole == Constants.guestRole)
+            {
+                return Unauthorized("You must log in with an account.");
+            }
+
             List<Decision> decisions = _decisionService.GetAll();
+            return Ok(decisions);
+        }
+
+        [HttpGet("{id}/decisions")]
+        public ActionResult getDecisionsById(int id)
+        {
+            if (LoginController.userRole == Constants.guestRole)
+            {
+                return Unauthorized("You must log in with an account.");
+            }
+
+            List<Decision> decisions = _decisionService.getDecisionsByUser(id);
             return Ok(decisions);
         }
     }

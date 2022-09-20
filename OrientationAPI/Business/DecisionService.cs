@@ -6,10 +6,12 @@ namespace OrientationAPI.Business
     public class DecisionService : IDecisionService
     {
         private DecisionRepository _decisionRepository;
+        private IDemandService _demandService;
 
-        public DecisionService(DecisionRepository decisionRepository)
+        public DecisionService(DecisionRepository decisionRepository, IDemandService demandService)
         {
             _decisionRepository = decisionRepository;
+            _demandService = demandService;
         }
         public void Add(Decision entity)
         {
@@ -30,6 +32,20 @@ namespace OrientationAPI.Business
         public List<Decision> GetAll()
         {
             return _decisionRepository.GetList();
+        }
+
+        public List<Decision> getDecisionsByUser(int userId)
+        {
+            var demands = _demandService.GetListByUserId(userId);
+            List<Decision> decisions = new List<Decision>();
+            foreach(var demand in demands)
+            {
+                if (demand.isEvaluate)
+                {
+                    decisions.Add(_decisionRepository.getByDemandId(demand.id));
+                }
+            }
+            return decisions;
         }
     }
 }

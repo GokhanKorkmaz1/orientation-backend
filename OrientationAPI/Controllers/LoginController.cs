@@ -29,10 +29,11 @@ namespace OrientationAPI.Controllers
         [HttpPost]
         public ActionResult Login([FromBody]LoginUserDto loginUserDto)
         {
-            //if (userRole != Constants.guestRole)
-            //{
-            //    return BadRequest("You must log out of your account.");
-            //}
+            if (userRole != Constants.guestRole)
+            {
+                return BadRequest("You must log out of your account.");
+            }
+
             var user = _userService.GetByEmail(loginUserDto.email);
             if (user == null)
             {
@@ -73,7 +74,14 @@ namespace OrientationAPI.Controllers
             {
                 userRole = Constants.guestRole;
                 userId = 0;
-                return Ok();
+
+                AuthUser authUser = new AuthUser
+                {
+                    UserId = userId,
+                    UserRole = userRole
+                };
+
+                return Ok(authUser);
             }
             return BadRequest();
         }
