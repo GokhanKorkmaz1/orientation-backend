@@ -12,19 +12,16 @@ using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(args);
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Appsettings:Token").Value);
 // Add services to the container.
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<UserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<UserRepository, UserRepository>();
 
-builder.Services.AddTransient<IDemandService, DemandService>();
-builder.Services.AddTransient<DemandRepository, DemandRepository>();
+builder.Services.AddScoped<IDemandService, DemandService>();
+builder.Services.AddScoped<DemandRepository, DemandRepository>();
 
-builder.Services.AddTransient<IDocumentService, DocumentService>();
-builder.Services.AddTransient<DocumentRepository, DocumentRepository>();
+builder.Services.AddScoped<IDecisionService, DecisionService>();
+builder.Services.AddScoped<DecisionRepository, DecisionRepository>();
 
-builder.Services.AddTransient<IDecisionService, DecisionService>();
-builder.Services.AddTransient<DecisionRepository, DecisionRepository>();
-
-builder.Services.AddTransient<LoginController, LoginController>();
+builder.Services.AddScoped<LoginController, LoginController>();
 
 
 builder.Services.AddControllers()

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OrientationAPI.Business;
 using OrientationAPI.Helpers;
 using OrientationAPI.Models;
@@ -12,16 +10,12 @@ namespace OrientationAPI.Controllers
     [ApiController]
     public class AdminsController : ControllerBase
     {
-        private IUserService _userService;
         private IDemandService _demandService;
-        private IDocumentService _documentService;
         private IDecisionService _decisionService;
 
-        public AdminsController(IUserService userService, IDemandService demandService, IDocumentService documentService, IDecisionService decisionService)
+        public AdminsController(IDemandService demandService, IDecisionService decisionService)
         {
-            _userService = userService;
             _demandService = demandService;
-            _documentService = documentService;
             _decisionService = decisionService; 
         }
 

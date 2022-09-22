@@ -10,13 +10,9 @@ namespace OrientationAPI.Data
 
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<User>().HasIndex(u => u.email).IsUnique();
-        //}
-
         public DbSet<User> users { get; set; }
         public DbSet<Demand> demands { get; set; }
         public DbSet<Decision> decisions { get; set; }
-        public DbSet<Document> documents { get; set; }    }
+        
+    }
 }

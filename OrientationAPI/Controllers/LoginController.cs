@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using OrientationAPI.Business;
 using OrientationAPI.Helpers;
 using OrientationAPI.Models.Dtos;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace OrientationAPI.Controllers
 {
@@ -16,14 +10,12 @@ namespace OrientationAPI.Controllers
     public class LoginController : ControllerBase
     {
         private IUserService _userService;
-        //private IConfiguration _configuration;
         public static string userRole = Constants.guestRole;
         public static int userId = 0;
 
-        public LoginController(IUserService userService/*, IConfiguration configuration*/)
+        public LoginController(IUserService userService)
         {
             _userService = userService;
-            //_configuration = configuration;
         }
 
         [HttpPost]
@@ -37,32 +29,15 @@ namespace OrientationAPI.Controllers
             var user = _userService.GetByEmail(loginUserDto.email);
             if (user == null)
             {
-                return Unauthorized("Check your e-mail address.");
+                return Unauthorized("Check your e-mail and password.");
             }
 
             userRole = user.isAdmin == true ? Constants.adminRole : Constants.userRole;
             userId = user.id;
             if (user.password != loginUserDto.password)
             {
-                return NotFound("Check your password.");
+                return NotFound("Check your e-mail and password");
             }
-            //var tokenHandler = new JwtSecurityTokenHandler();
-            //var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
-
-            //var tokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity(new Claim[]
-            //    {
-            //        new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
-            //        new Claim(ClaimTypes.Name, user.name),
-            //        new Claim(ClaimTypes.Role, userRole)
-            //    }),
-            //    Expires = DateTime.Now.AddDays(1),
-            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha512Signature)
-            //};
-
-            //var token = tokenHandler.CreateToken(tokenDescriptor);
-            //var tokenString = tokenHandler.WriteToken(token);
 
             return Ok(user);
         }
